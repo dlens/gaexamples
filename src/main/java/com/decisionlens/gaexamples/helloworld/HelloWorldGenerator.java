@@ -15,6 +15,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Generate HELLO WORLD string using WatchMaker EvolutionEngine
+ * The initial population is 10 randomly generated strings using the
+ * 26 upper case letters and a space character.
+ *
+ * Use HelloWorldGeneratorTest to run.
+ *
+ */
 public class HelloWorldGenerator {
 
     public String generate() {
