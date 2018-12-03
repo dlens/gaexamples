@@ -21,24 +21,28 @@ import java.util.Random;
  * Use HelloWorldGeneratorTest to run.
  *
  */
-public class HelloWorldGeneratorV2 {
+class HelloWorldGeneratorV2 {
+    private final double probOfMutation;
+    private final double probOfCrossover;
     private String initialString;
     private String targetString;
 
-    public HelloWorldGeneratorV2(String initialString, String targetString) {
+    HelloWorldGeneratorV2(String initialString, String targetString, double probOfMutation, double probOfCrossover) {
         this.initialString = initialString;
         this.targetString = targetString;
         if (initialString.length() != targetString.length())
             throw new IllegalArgumentException("Both strings need same length");
+        this.probOfMutation = probOfMutation;
+        this.probOfCrossover = probOfCrossover;
     }
 
-    public String generate() {
+    String generate() {
         CandidateFactory<StringCandidate> factory = new StringCandidateFactory(initialString);
 
         // evolutionary pipeline
         List<EvolutionaryOperator<StringCandidate>> operators = new LinkedList<>();
-        operators.add(new StringCandidateCrossover(2));
-        operators.add(new StringCandidateMutation(new Probability(0.1)));
+        operators.add(new StringCandidateCrossover(new Probability(probOfCrossover)));
+        operators.add(new StringCandidateMutation(new Probability(probOfMutation)));
         EvolutionaryOperator<StringCandidate> pipeline = new EvolutionPipeline<>(operators);
 
         // fitness function
@@ -54,12 +58,12 @@ public class HelloWorldGeneratorV2 {
         EvolutionEngine<StringCandidate> engine = new GenerationalEvolutionEngine<>(factory, pipeline, fitnessEvaluator, selectionStrategy, random);
         
         // observer
-        engine.addEvolutionObserver(data -> {
+        engine.addEvolutionObserver(data ->
             System.out.printf("Generation %d: %s, %s\n",
                     data.getGenerationNumber(),
                     data.getBestCandidate().getCandidate(),
-                    data.getBestCandidate().toString());
-        });
+                    data.getBestCandidate().toString())
+        );
 
         // evolve
         StringCandidate result = engine.evolve(100, 10, new TargetFitness(11, true));

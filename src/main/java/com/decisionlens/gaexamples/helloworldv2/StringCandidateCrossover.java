@@ -1,5 +1,6 @@
 package com.decisionlens.gaexamples.helloworldv2;
 
+import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.operators.AbstractCrossover;
 
 import java.util.*;
@@ -7,15 +8,16 @@ import java.util.*;
 public class StringCandidateCrossover extends AbstractCrossover<StringCandidate> {
 
 
-    private static final double PROB_CROSS = 0.2;
+    private static double ProbabilityOfCrossover = 0.2;
 
-    protected StringCandidateCrossover(int crossoverPoints) {
-        super(crossoverPoints);
+    StringCandidateCrossover(Probability probabilityOfCrossover) {
+        super(2, probabilityOfCrossover);
+        ProbabilityOfCrossover = probabilityOfCrossover.doubleValue();
     }
 
     @Override
     protected List<StringCandidate> mate(StringCandidate parent1, StringCandidate parent2, int numberOfCrossoverPoints, Random rng) {
-        if ((parent1.size() < 1) || (parent2.size() < 1) || (rng.nextDouble() > PROB_CROSS)) {
+        if ((parent1.size() < 1) || (parent2.size() < 1) || (rng.nextDouble() > ProbabilityOfCrossover)) {
             StringCandidate rval1 = new StringCandidate(parent1);
             StringCandidate rval2 = new StringCandidate(parent2);
             List<StringCandidate> rval = new ArrayList<>(2);
