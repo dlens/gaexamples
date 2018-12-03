@@ -28,11 +28,15 @@ public class StringCandidateMutation implements EvolutionaryOperator<StringCandi
     }
 
     private StringCandidate mutate(StringCandidate s, Random rng) {
-      if(rng.nextDouble() < PROPB_DELETE) {
-          return mutateDelete(s, rng);
-      } else {
-          return mutateAdd(s, rng);
-      }
+        if (rng.nextDouble() < mutationProbability.nextValue().doubleValue()) {
+            if (rng.nextDouble() < PROPB_DELETE) {
+                return mutateDelete(s, rng);
+            } else {
+                return mutateAdd(s, rng);
+            }
+        } else {
+            return new StringCandidate(s);
+        }
     }
 
     private StringCandidate mutateAdd(StringCandidate s, Random rng) {

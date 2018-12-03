@@ -9,6 +9,11 @@ public class Change {
     private char letter;
     private int position;
 
+    public Change(Change src) {
+        this.letter = src.letter;
+        this.position = src.position;
+    }
+
     public Change(int position, Random random) {
         this.position = position;
         this.letter = LETTERS[random.nextInt(LETTERS.length)];

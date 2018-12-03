@@ -10,7 +10,10 @@ public class StringCandidate extends ArrayList<Change> {
     }
 
     public StringCandidate(StringCandidate s) {
-        super(s);
+        super();
+        for(Change c: s) {
+            add(new Change(c));
+        }
         this.initialString = s.initialString;
     }
 
@@ -20,6 +23,20 @@ public class StringCandidate extends ArrayList<Change> {
 
     public void setInitialString(String initialString) {
         this.initialString = initialString;
+    }
+
+    @Override
+    public boolean add(Change change) {
+        //See if a change like this already exists?
+        for(Change ch : this) {
+            if (ch.getPosition() == change.getPosition()) {
+                //We already have a change like this, reset
+                ch.setLetter(change.getLetter());
+                return true;
+            }
+        }
+        //No such change yet
+        return super.add(change);
     }
 
     public String getCandidate() {

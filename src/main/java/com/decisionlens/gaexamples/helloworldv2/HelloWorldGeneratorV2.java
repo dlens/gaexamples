@@ -4,6 +4,7 @@ import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.Probability;
 import org.uncommons.watchmaker.framework.*;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
+import org.uncommons.watchmaker.framework.selection.RankSelection;
 import org.uncommons.watchmaker.framework.selection.TruncationSelection;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
 
@@ -35,14 +36,14 @@ public class HelloWorldGeneratorV2 {
         // evolutionary pipeline
         List<EvolutionaryOperator<StringCandidate>> operators = new LinkedList<>();
         operators.add(new StringCandidateCrossover(2));
-        operators.add(new StringCandidateMutation(new Probability(0.02)));
+        operators.add(new StringCandidateMutation(new Probability(0.1)));
         EvolutionaryOperator<StringCandidate> pipeline = new EvolutionPipeline<>(operators);
 
         // fitness function
         FitnessEvaluator<StringCandidate> fitnessEvaluator = new StringCandidateEvaluator();
 
         // selection strategy
-        SelectionStrategy<Object> selectionStrategy = new TruncationSelection(0.15);
+        SelectionStrategy<Object> selectionStrategy = new RankSelection();
 
         // random generator
         Random random = new MersenneTwisterRNG();
@@ -59,7 +60,7 @@ public class HelloWorldGeneratorV2 {
         });
 
         // evolve
-        StringCandidate result = engine.evolve(100, 3, new TargetFitness(11, true));
+        StringCandidate result = engine.evolve(100, 10, new TargetFitness(11, true));
         System.out.println(result.getCandidate());
         return result.getCandidate();
     }
