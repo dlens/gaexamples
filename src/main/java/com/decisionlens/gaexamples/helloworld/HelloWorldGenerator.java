@@ -60,7 +60,7 @@ public class HelloWorldGenerator {
         });
 
         // evolve
-        String result = engine.evolve(10, 0, new TargetFitness(11, true));
+        String result = engine.evolve(100, 3, new TargetFitness(11, true));
         System.out.println(result);
         return result;
     }
