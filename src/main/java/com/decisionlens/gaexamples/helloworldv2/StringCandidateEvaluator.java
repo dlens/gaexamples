@@ -5,7 +5,11 @@ import org.uncommons.watchmaker.framework.FitnessEvaluator;
 import java.util.List;
 
 public class StringCandidateEvaluator implements FitnessEvaluator<StringCandidate> {
-    private final String targetString = "HELLO WORLD";
+    private final String targetString;
+
+    public StringCandidateEvaluator(String targetString) {
+        this.targetString = targetString;
+    }
 
     @Override
     public double getFitness(StringCandidate candidate, List<? extends StringCandidate> population) {

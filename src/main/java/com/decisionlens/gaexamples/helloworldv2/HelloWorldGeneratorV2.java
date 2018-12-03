@@ -28,6 +28,8 @@ public class HelloWorldGeneratorV2 {
     public HelloWorldGeneratorV2(String initialString, String targetString) {
         this.initialString = initialString;
         this.targetString = targetString;
+        if (initialString.length() != targetString.length())
+            throw new IllegalArgumentException("Both strings need same length");
     }
 
     public String generate() {
@@ -40,7 +42,7 @@ public class HelloWorldGeneratorV2 {
         EvolutionaryOperator<StringCandidate> pipeline = new EvolutionPipeline<>(operators);
 
         // fitness function
-        FitnessEvaluator<StringCandidate> fitnessEvaluator = new StringCandidateEvaluator();
+        FitnessEvaluator<StringCandidate> fitnessEvaluator = new StringCandidateEvaluator(targetString);
 
         // selection strategy
         SelectionStrategy<Object> selectionStrategy = new RankSelection();
