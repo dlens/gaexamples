@@ -5,20 +5,20 @@ import org.uncommons.watchmaker.framework.factories.AbstractCandidateFactory;
 import java.util.Random;
 
 public class StringCandidateFactory extends AbstractCandidateFactory<StringCandidate> {
-    private final char[] alphabet = Alphabet.create();
-    private int targetStringLength;
+    private String initialString;
+    private int numChanges = 5;
 
-    public StringCandidateFactory(int targetStringLength) {
-        this.targetStringLength = targetStringLength;
+    public StringCandidateFactory(String initialString) {
+        this.initialString = initialString;
     }
 
     @Override
     public StringCandidate generateRandomCandidate(Random random) {
-        StringCandidate stringCandidate = new StringCandidate();
-        for (int i = 0; i < targetStringLength; i++) {
-            char letter = alphabet[random.nextInt(alphabet.length)];
-            stringCandidate.addChange(new Change().setLetter(letter));
+        StringCandidate stringCandidate = new StringCandidate(initialString);
+        for(int i = 0; i < numChanges; i++) {
+            stringCandidate.add(new Change(random.nextInt(initialString.length()), random));
         }
+
         return stringCandidate;
     }
 }

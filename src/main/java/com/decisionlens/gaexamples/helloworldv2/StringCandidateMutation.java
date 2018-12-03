@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 public class StringCandidateMutation implements EvolutionaryOperator<StringCandidate> {
+    private static final double PROPB_DELETE = 0.25;
     private final char[] alphabet = Alphabet.create();
     private final NumberGenerator<Probability> mutationProbability;
 
@@ -27,12 +28,28 @@ public class StringCandidateMutation implements EvolutionaryOperator<StringCandi
     }
 
     private StringCandidate mutate(StringCandidate s, Random rng) {
-        StringBuilder buffer = new StringBuilder(s.getCandidate());
-        for (int i = 0; i < buffer.length(); i++) {
-            if (mutationProbability.nextValue().nextEvent(rng)) {
-                buffer.setCharAt(i, alphabet[rng.nextInt(alphabet.length)]);
-            }
+      if(rng.nextDouble() < PROPB_DELETE) {
+          return mutateDelete(s, rng);
+      } else {
+          return mutateAdd(s, rng);
+      }
+    }
+
+    private StringCandidate mutateAdd(StringCandidate s, Random rng) {
+        s = new StringCandidate(s);
+        int position = rng.nextInt(s.getInitialString().length());
+        s.add(new Change(position, rng));
+        return s;
+    }
+
+    private StringCandidate mutateDelete(StringCandidate s, Random rng) {
+        s = new StringCandidate(s);
+        if(s.size() < 1) {
+            return s;
         }
-        return new StringCandidate().setCandidate(buffer.toString());
+
+        int position = rng.nextInt(s.size());
+        s.remove(position);
+        return s;
     }
 }
