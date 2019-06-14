@@ -66,7 +66,7 @@ class HelloWorldGeneratorV2 {
         );
 
         // evolve
-        StringCandidate result = engine.evolve(100, 10, new TargetFitness(11, true));
+        StringCandidate result = engine.evolve(10, 2, new TargetFitness(11, true));
         System.out.println(result.getCandidate());
         return result.getCandidate();
     }
